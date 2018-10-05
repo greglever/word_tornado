@@ -10,14 +10,16 @@ class MainHandler(tornado.web.RequestHandler):
 
     # TODO(Greg): Run this locally
     def get(self):
-        self.write('<html><body><form action="/myform" method="POST">'
-                   '<input type="text" name="message">'
-                   '<input type="submit" value="Submit">'
-                   '</form></body></html>')
+        # self.write('<html><body><form action="/myform" method="POST">'
+        self.write(
+            '<html><body><form action="/" method="POST">'
+            '<input type="text" name="message">'
+            '<input type="submit" value="Submit">'
+            '</form></body></html>'
+        )
 
     def post(self):
         self.set_header("Content-Type", "text/plain")
-
         self.write("You wrote " + self.get_body_argument("message"))
 
 
