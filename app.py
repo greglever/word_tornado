@@ -1,16 +1,18 @@
-# TODO(Greg): Get this running locally (or via docker-compose) in python 3
-# TODO(Greg): Find the python3.6 docker image
 import tornado.ioloop
 import tornado.web
+from tornado.httpclient import AsyncHTTPClient
+from bs4 import BeautifulSoup
+
+
+class AdminHandler(tornado.web.RequestHandler):
+
+    def get(self):
+        self.write("This is the admin page placeholder...")
 
 
 class MainHandler(tornado.web.RequestHandler):
-    # def get(self):
-    #     self.write("Hello, world")
 
-    # TODO(Greg): Run this locally
     def get(self):
-        # self.write('<html><body><form action="/myform" method="POST">'
         self.write(
             '<html><body><form action="/" method="POST">'
             '<input type="text" name="message">'
@@ -18,14 +20,18 @@ class MainHandler(tornado.web.RequestHandler):
             '</form></body></html>'
         )
 
-    def post(self):
-        self.set_header("Content-Type", "text/plain")
-        self.write("You wrote " + self.get_body_argument("message"))
+    async def post(self):
+        http = AsyncHTTPClient()
+        url = self.get_body_argument("message")
+        response = await http.fetch(url)
+        soup = BeautifulSoup(response.body, 'html.parser')
+        self.write("Fetched " + str(len(response.body)) + " characters from" + url + soup.get_text())
 
 
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
+        (r"/admin", AdminHandler),
     ])
 
 
