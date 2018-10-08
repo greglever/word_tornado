@@ -1,6 +1,20 @@
 version: '3'
 services:
+  db:
+   image: mysql:5.7
+   volumes:
+     - db_data:/var/lib/mysql
+   restart: always
+   environment:
+     MYSQL_ROOT_PASSWORD: wordtornadoexample
+     MYSQL_DATABASE: wordtornado
+     MYSQL_USER: wordtornado
+     MYSQL_PASSWORD: wordtornado
   web:
+    depends_on:
+      - db
     build: .
     ports:
      - "8888:8888"
+volumes:
+  db_data:

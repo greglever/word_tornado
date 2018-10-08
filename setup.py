@@ -21,5 +21,8 @@ setup(
     ],
     install_requires=[
         'tornado==5.1.1',
+        'beautifulsoup4==4.6.3',
+        'lxml==4.2.5',
+        'Tornado-MySQL==0.5.1',
     ]
 )
